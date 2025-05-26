@@ -1,32 +1,19 @@
-const mysql = require('mysql2');
 
-const connection = mysql.createConnection({
+const {Sequelize} = require('sequelize');
+
+const sequelize = new Sequelize('studentmanagement','root','7355',{
     host:'localhost',
-    user:'root',
-    password:'7355',
-    database:'testdb'
-})
+    dialect:'mysql'
+});
 
-connection.connect((err)=>{
-    if(err){
-        console.log(err);
-        return ;
+(async()=>{
+    try{
+        await sequelize.authenticate();
+        console.log('connection is created');
     }
-    console.log('connection has been created');
+    catch(error){
+        console.log(error);
+    }
+})();
 
-    const createQuery = `create table IF NOT EXISTS students(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(20),
-    email VARCHAR(256))`
-
-    connection.execute(createQuery,(err)=>{
-        if(err){
-          console.log(err);
-          connection.end();
-          return ;
-        }
-        console.log('Table is created');
-    })
-})
-
-module.exports=connection;
+module.exports={sequelize};
