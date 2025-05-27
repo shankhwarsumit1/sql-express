@@ -1,6 +1,7 @@
 const db = require('../utils/db-connection.js');
 const Student = require('../models/students.js');
-
+const IdCard = require('../models/identityCard.js');
+const Departments = require('../models/department.js');
 const addEntries = async (req,res)=>{
     try{
      const {email,name} = req.body;
@@ -51,11 +52,41 @@ const deleteEntry = async (req,res)=>{
 
 }
 
+const addtoStudentAndIdentityCard = async(req,res)=>{
+try{
+const student =await Student.create(req.body.students);
+const idcard = await IdCard.create({
+    ...req.body.IdentityCard,
+    StudentId:student.id
+});
+ res.status(201).json({student,idcard});
+}
+catch(error){
+  res.status(500).json({error:error.message});
+  return;
+}
+}
 
-
+const addingValueToStudentAndDepartment = async(req,res)=>{
+     try{
+          const department = await Departments.create(req.body.department);
+          const student = await Student.create({
+            ...req.body.students,
+            DepartmentId:department.id
+               
+          });
+          res.status(201).json({student,department});
+     }
+     catch(error){
+       res.status(500).json({error:error.message});
+       return;
+     }
+}
 
 module.exports ={
     addEntries,
     updateEntry,
-    deleteEntry
+    deleteEntry,
+    addtoStudentAndIdentityCard,
+    addingValueToStudentAndDepartment
 }
