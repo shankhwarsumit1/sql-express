@@ -9,10 +9,11 @@ app.get('/',(req,res)=>{
     res.send('Express response')
 })
 
-sequelize.sync({force:true}).then(()=>{
+sequelize.sync().then(()=>{
     app.listen(3000,()=>{
     console.log('Express is running on port 3000')
-})
+})      
+
 }).catch((err)=>{
     console.log(err);
 })
