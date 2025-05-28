@@ -7,7 +7,7 @@ require('./models/index.js');
 const app = express();
 
 app.use(express.json());
-sequelize.sync().then(()=>{
+sequelize.sync({force:true}).then(()=>{
     app.listen(3000,()=>{
     console.log('Express is running on port 3000')
 })      
